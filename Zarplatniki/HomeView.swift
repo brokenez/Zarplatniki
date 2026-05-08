@@ -18,27 +18,32 @@ private extension Color {
 // MARK: - HomeView
 
 struct HomeView: View {
-    // Teal background colour matching Figma hero (dark teal #0A4850)
-    private let heroBgColor = Color(red: 0.04, green: 0.28, blue: 0.31)
+    @State private var config = ParticleConfig()
+    @State private var debugOpen = false
+
     private let screenHorizontalPadding: CGFloat = 16
     private let cardContentPadding: CGFloat = 20
     private let cardCornerRadius: CGFloat = 24
     private let sectionSpacing: CGFloat = 20
-    private let topBackgroundHeight: CGFloat = 176
-    private let heroBackgroundHeight: CGFloat = 520
-    private let heroFadeHeight: CGFloat = 120
+
+    private var heroBgColor: Color { config.heroGradientColor }
 
     var body: some View {
         NavigationStack {
-            ZStack(alignment: .top) {
-                Color.bgBase.ignoresSafeArea()
+            ZStack(alignment: .bottom) {
+                ZStack(alignment: .top) {
+                    Color.bgBase.ignoresSafeArea()
 
-                ScrollView(showsIndicators: false) {
-                    VStack(spacing: 0) {
-                        heroSection
-                        cardStack
+                    ScrollView(showsIndicators: false) {
+                        VStack(spacing: 0) {
+                            heroSection
+                            cardStack
+                        }
                     }
                 }
+
+                DebugPanel(config: $config, isOpen: $debugOpen)
+                    .padding(.bottom, 8)
             }
             .navigationTitle("Моя зарплата")
             .navigationBarTitleDisplayMode(.inline)
@@ -72,7 +77,7 @@ struct HomeView: View {
 
     private var heroSection: some View {
         VStack(spacing: 0) {
-            HeroView()
+            HeroView(config: config)
                 .padding(.top, 6)
             VStack(spacing: 0) {
                 Text("Ваш уровень")

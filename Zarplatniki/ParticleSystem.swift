@@ -14,20 +14,24 @@ struct ParticleData {
 struct ParticleSystemView: View {
     let coinCenter: CGPoint
     let bounds: CGSize
+    var config: ParticleConfig
 
     @State private var particles: [ParticleData] = []
     @State private var startDate = Date()
+    @State private var lastCount: Int = 0
 
     var body: some View {
         TimelineView(.animation) { ctx in
             let elapsed = CGFloat(ctx.date.timeIntervalSince(startDate))
-            Canvas { context, _ in
+            Canvas { context, size in
                 for p in particles {
                     let raw = p.distOffset + elapsed * p.speed * 28
                     let dist = raw.truncatingRemainder(dividingBy: p.maxDist)
 
                     let x = coinCenter.x + cos(p.angle) * dist
                     let y = coinCenter.y + sin(p.angle) * dist
+
+                    guard x >= 0, x <= size.width, y >= 0, y <= size.height else { continue }
 
                     let flicker = 0.35 + 0.65 * abs(sin(Double(elapsed) * p.flickerRate + p.phase))
                     let progress = dist / p.maxDist
@@ -41,20 +45,33 @@ struct ParticleSystemView: View {
                 }
             }
         }
-        .onAppear { spawnParticles() }
+        .onChange(of: Int(config.count)) { _, newCount in
+            regenerate(count: newCount)
+        }
+        .onChange(of: config.size) { _, _ in regenerate(count: Int(config.count)) }
+        .onChange(of: config.speed) { _, _ in regenerate(count: Int(config.count)) }
+        .onChange(of: config.maxDistance) { _, _ in regenerate(count: Int(config.count)) }
+        .onAppear { regenerate(count: Int(config.count)) }
     }
 
-    private func spawnParticles() {
+    private func regenerate(count: Int) {
+        guard count > 0 else { particles = []; return }
+        let maxDist = max(config.maxDistance, 10)
+        let baseSize = max(config.size, 0.5)
+        let baseSpeed = max(config.speed, 0.05)
+
         startDate = Date()
-        let count = 55
         particles = (0..<count).map { i in
             let baseAngle = Double(i) * (2 * .pi / Double(count))
             let jitter = Double.random(in: -0.25...0.25)
-            let maxD = CGFloat.random(in: 55...160)
+            let distLow = min(55, maxDist * 0.3)
+            let maxD = CGFloat.random(in: distLow...maxDist)
+            let sizeSpread = baseSize * 0.5
+            let speedSpread = baseSpeed * 0.6
             return ParticleData(
                 angle: baseAngle + jitter,
-                speed: CGFloat.random(in: 0.25...1.0),
-                size: CGFloat.random(in: 1.5...4.5),
+                speed: CGFloat.random(in: max(baseSpeed - speedSpread, 0.01)...(baseSpeed + speedSpread)),
+                size: CGFloat.random(in: max(baseSize - sizeSpread, 0.3)...(baseSize + sizeSpread)),
                 maxDist: maxD,
                 flickerRate: Double.random(in: 1.2...5.5),
                 phase: Double(i) * 0.618,

@@ -1,11 +1,14 @@
-<svg preserveAspectRatio="none" width="100%" height="100%" overflow="visible" style="display: block;" viewBox="0 0 28 25.9" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g id="Mask">
-<path id="Mask_2" fill-rule="evenodd" clip-rule="evenodd" d="M7.7 2.8C7.7 1.2536 8.9536 0 10.5 0H11.2H16.8H17.5C19.0464 0 20.3 1.2536 20.3 2.8V4.9H19.6C18.2953 4.9 17.199 4.00766 16.8882 2.8H11.1118C10.801 4.00766 9.70469 4.9 8.4 4.9H7.7V2.8Z" fill="var(--fill-0, black)"/>
-<path id="Mask_3" fill-rule="evenodd" clip-rule="evenodd" d="M28 12.6H0V25.9H22.4C25.4928 25.9 28 23.3928 28 20.3V12.6ZM13.3 14.7C11.7536 14.7 10.5 15.9536 10.5 17.5V18.2H14.7C16.2464 18.2 17.5 16.9464 17.5 15.4V14.7H13.3Z" fill="url(#paint0_linear_2_1472)"/>
-<path id="Mask_4" d="M0 11.9C0 8.80721 2.50721 6.3 5.6 6.3H28V12.6H0V11.9Z" fill="var(--fill-0, black)"/>
+<svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+<mask id="mask0_3_210" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="2" y="2" width="29" height="27">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M10.5 5.59999C10.5 4.05359 11.7536 2.79999 13.3 2.79999H14H19.6H20.3C21.8464 2.79999 23.1 4.05359 23.1 5.59999V7.69999H22.4C21.0953 7.69999 19.999 6.80765 19.6882 5.59999H13.9118C13.601 6.80765 12.5047 7.69999 11.2 7.69999H10.5V5.59999Z" fill="black"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M30.8 15.4H2.8V28.7H25.2C28.2928 28.7 30.8 26.1928 30.8 23.1V15.4ZM16.1 17.5C14.5536 17.5 13.3 18.7536 13.3 20.3V21H17.5C19.0464 21 20.3 19.7464 20.3 18.2V17.5H16.1Z" fill="url(#paint0_linear_3_210)"/>
+<path d="M2.8 14.7C2.8 11.6072 5.30721 9.09998 8.4 9.09998H30.8V15.4H2.8V14.7Z" fill="black"/>
+</mask>
+<g mask="url(#mask0_3_210)">
+<path d="M0 0H33.6V33.6H0V0Z" fill="#A381FF"/>
 </g>
 <defs>
-<linearGradient id="paint0_linear_2_1472" x1="26.6" y1="26.565" x2="1.36425" y2="11.4882" gradientUnits="userSpaceOnUse">
+<linearGradient id="paint0_linear_3_210" x1="29.4" y1="29.365" x2="4.16426" y2="14.2881" gradientUnits="userSpaceOnUse">
 <stop stop-opacity="0.8"/>
 <stop offset="1" stop-opacity="0.4"/>
 </linearGradient>
