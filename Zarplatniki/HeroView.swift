@@ -3,7 +3,7 @@ import SwiftUI
 struct HeroView: View {
     var config: ParticleConfig
     @State private var motion = MotionManager()
-    private let tiltStrength: Double = 18
+    private let tiltStrength: Double = 21.6
     private let coinSize: CGFloat = 180
 
     var body: some View {

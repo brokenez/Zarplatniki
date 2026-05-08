@@ -45,6 +45,7 @@ struct DebugPanel: View {
                     sliderRow("Size", value: $config.size, range: 0.5...10)
                     sliderRow("Speed", value: $config.speed, range: 0.05...3)
                     sliderRow("Distance", value: $config.maxDistance, range: 20...300)
+                    sliderRow("Opacity", value: $config.opacity, range: 0...1)
                 }
 
                 paramSection("Gradient RGB") {

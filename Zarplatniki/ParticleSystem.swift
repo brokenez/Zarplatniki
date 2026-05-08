@@ -5,9 +5,9 @@ struct ParticleData {
     let speed: CGFloat
     let size: CGFloat
     let maxDist: CGFloat
-    let flickerRate: Double
-    let phase: Double
     let baseAlpha: Double
+    let disappearAt: CGFloat
+    let fadeOutLength: CGFloat
     let distOffset: CGFloat
 }
 
@@ -33,10 +33,10 @@ struct ParticleSystemView: View {
 
                     guard x >= 0, x <= size.width, y >= 0, y <= size.height else { continue }
 
-                    let flicker = 0.35 + 0.65 * abs(sin(Double(elapsed) * p.flickerRate + p.phase))
                     let progress = dist / p.maxDist
-                    let fade: Double = progress < 0.12 ? Double(progress / 0.12) : (progress > 0.78 ? Double((1 - progress) / 0.22) : 1.0)
-                    let alpha = p.baseAlpha * 0.65 * flicker * fade
+                    let fadeIn = min(progress / 0.12, 1)
+                    let fadeOut = max(min((p.disappearAt - progress) / p.fadeOutLength, 1), 0)
+                    let alpha = p.baseAlpha * config.opacity * Double(fadeIn * fadeOut)
 
                     let rect = CGRect(x: x - p.size / 2, y: y - p.size / 2, width: p.size, height: p.size)
                     var ctx2 = context
@@ -73,9 +73,9 @@ struct ParticleSystemView: View {
                 speed: CGFloat.random(in: max(baseSpeed - speedSpread, 0.01)...(baseSpeed + speedSpread)),
                 size: CGFloat.random(in: max(baseSize - sizeSpread, 0.3)...(baseSize + sizeSpread)),
                 maxDist: maxD,
-                flickerRate: Double.random(in: 1.2...5.5),
-                phase: Double(i) * 0.618,
                 baseAlpha: Double.random(in: 0.45...1.0),
+                disappearAt: CGFloat.random(in: 0.55...0.98),
+                fadeOutLength: CGFloat.random(in: 0.05...0.18),
                 distOffset: CGFloat.random(in: 0...maxD)
             )
         }
