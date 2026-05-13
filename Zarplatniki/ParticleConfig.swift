@@ -12,6 +12,10 @@ struct ParticleConfig: Equatable {
     var gradientB: Double = 0.31
     var glowBrightness: Double = 0.55
 
+    var rippleSize: Double = 1.0
+    var rippleDistortion: Double = 22
+    var rippleWavelength: Double = 24
+
     var heroGradientColor: Color {
         Color(red: gradientR, green: gradientG, blue: gradientB)
     }

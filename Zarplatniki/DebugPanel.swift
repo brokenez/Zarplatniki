@@ -61,6 +61,12 @@ struct DebugPanel: View {
                                 .strokeBorder(.white.opacity(0.2), lineWidth: 1)
                         )
                 }
+
+                paramSection("Ripple") {
+                    sliderRow("Size", value: $config.rippleSize, range: 0.55...1.8)
+                    sliderRow("Distortion", value: $config.rippleDistortion, range: 0...46)
+                    sliderRow("Wavelength", value: $config.rippleWavelength, range: 10...54)
+                }
             }
             .padding(.horizontal, 16)
             .padding(.bottom, 16)
