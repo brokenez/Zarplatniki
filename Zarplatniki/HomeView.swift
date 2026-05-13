@@ -20,8 +20,6 @@ private extension Color {
 struct HomeView: View {
     @State private var config = ParticleConfig()
     @State private var debugOpen = false
-    @State private var airDropGlowVisible = false
-    @State private var airDropGlowPulse = 0
 
     private let screenHorizontalPadding: CGFloat = 16
     private let cardContentPadding: CGFloat = 20
@@ -46,15 +44,6 @@ struct HomeView: View {
 
                 DebugPanel(config: $config, isOpen: $debugOpen)
                     .padding(.bottom, 8)
-            }
-            .overlay(alignment: .top) {
-                airDropTopGlow
-                    .opacity(airDropGlowVisible ? 1 : 0)
-                    .scaleEffect(x: airDropGlowVisible ? 1 : 0.72, y: airDropGlowVisible ? 1 : 0.34, anchor: .top)
-                    .offset(y: airDropGlowVisible ? -24 : -34)
-                    .id(airDropGlowPulse)
-                    .ignoresSafeArea(edges: .top)
-                    .allowsHitTesting(false)
             }
             .navigationTitle("Моя зарплата")
             .navigationBarTitleDisplayMode(.inline)
@@ -88,7 +77,7 @@ struct HomeView: View {
 
     private var heroSection: some View {
         VStack(spacing: 0) {
-            HeroView(config: config, onCoinTap: triggerAirDropGlow)
+            HeroView(config: config)
                 .padding(.top, 6)
             VStack(spacing: 0) {
                 Text("Ваш уровень")
@@ -143,107 +132,6 @@ struct HomeView: View {
             )
             .padding(.top, -200)
             .ignoresSafeArea(edges: .top)
-        }
-    }
-
-    private var airDropTopGlow: some View {
-        VStack(spacing: 0) {
-            ZStack(alignment: .top) {
-                LinearGradient(
-                    colors: [
-                        .white.opacity(0.62),
-                        Color(red: 0.61, green: 0.96, blue: 1.0).opacity(0.44),
-                        Color.action.opacity(0.14),
-                        .clear
-                    ],
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
-                .frame(width: 310, height: 290)
-                .mask(
-                    LinearGradient(
-                        colors: [.white.opacity(0.9), .white.opacity(0.34), .clear],
-                        startPoint: .top,
-                        endPoint: .bottom
-                    )
-                    .frame(width: 310, height: 290)
-                    .clipShape(TopLightCone())
-                )
-                .blur(radius: 30)
-                .blendMode(.screen)
-
-                ForEach(0..<5, id: \.self) { index in
-                    let widths: [CGFloat] = [28, 44, 64, 86, 120]
-                    let heights: [CGFloat] = [220, 260, 245, 220, 190]
-                    let opacities: [Double] = [0.34, 0.24, 0.17, 0.12, 0.08]
-
-                    LinearGradient(
-                        colors: [
-                            .white.opacity(opacities[index]),
-                            Color(red: 0.62, green: 0.96, blue: 1.0).opacity(opacities[index] * 0.72),
-                            .clear
-                        ],
-                        startPoint: .top,
-                        endPoint: .bottom
-                    )
-                    .frame(width: widths[index], height: heights[index])
-                    .blur(radius: CGFloat(index * 3 + 12))
-                    .offset(x: CGFloat(index - 2) * 16, y: CGFloat(index % 2) * 8)
-                    .blendMode(.screen)
-                }
-
-                Capsule()
-                    .fill(.white.opacity(0.62))
-                    .frame(width: 112, height: 10)
-                    .blur(radius: 8)
-                    .offset(y: 1)
-                    .blendMode(.screen)
-
-                Capsule()
-                    .fill(Color(red: 0.72, green: 0.98, blue: 1.0).opacity(0.44))
-                    .frame(width: 180, height: 34)
-                    .blur(radius: 18)
-                    .offset(y: -1)
-                    .blendMode(.screen)
-            }
-            .frame(maxWidth: .infinity)
-            .frame(height: 300)
-
-            Spacer(minLength: 0)
-        }
-    }
-
-    private func triggerAirDropGlow() {
-        airDropGlowPulse += 1
-        withAnimation(.easeOut(duration: 0.1)) {
-            airDropGlowVisible = true
-        } completion: {
-            withAnimation(.easeOut(duration: 0.54)) {
-                airDropGlowVisible = false
-            }
-        }
-    }
-
-    private struct TopLightCone: Shape {
-        func path(in rect: CGRect) -> Path {
-            var path = Path()
-            let centerX = rect.midX
-
-            path.move(to: CGPoint(x: centerX - 26, y: rect.minY))
-            path.addCurve(
-                to: CGPoint(x: centerX - rect.width * 0.48, y: rect.maxY),
-                control1: CGPoint(x: centerX - 54, y: rect.height * 0.24),
-                control2: CGPoint(x: centerX - rect.width * 0.34, y: rect.height * 0.72)
-            )
-            path.addLine(to: CGPoint(x: centerX + rect.width * 0.48, y: rect.maxY))
-            path.addCurve(
-                to: CGPoint(x: centerX + 26, y: rect.minY),
-                control1: CGPoint(x: centerX + rect.width * 0.34, y: rect.height * 0.72),
-                control2: CGPoint(x: centerX + 54, y: rect.height * 0.24)
-            )
-            path.closeSubpath()
-
-            return path
         }
     }
 
